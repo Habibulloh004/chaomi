@@ -3,12 +3,7 @@
 import { useState, use } from "react";
 import { formatPrice, formatDate } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import {
-  Clock,
-  ChevronRight,
-  Package,
-  ChevronDown,
-} from "lucide-react";
+import { Clock, ChevronRight, Package, ChevronDown } from "lucide-react";
 import { TRANSLATIONS } from "@/lib/constants";
 
 import { useCartStore } from "@/store/cartStore";
@@ -30,7 +25,9 @@ export default function ProfilePage({ params }) {
             {TRANSLATIONS.orderHistory[locale]}
           </p>
         </div>
-        <LanguageSwitcher currentLocale={locale} />
+        <div className="flex justify-end">
+          <LanguageSwitcher currentLocale={locale} />
+        </div>
 
         {myOrders?.length === 0 ? (
           <div className="rounded-lg border border-gray-200 bg-white p-6 text-center shadow-sm">
