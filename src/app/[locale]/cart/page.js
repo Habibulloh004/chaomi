@@ -117,7 +117,7 @@ export default function CartPage({ params }) {
   if (products?.length == 0) {
     return (
       <main>
-        <div className="bg-chaomi-navy/90 my-4 border-chaomi-cream text-chaomi-cream rounded-md">
+        <div className="bg-chaomi-navy/90 my-4 w-11/12 mx-auto border-chaomi-cream text-chaomi-cream rounded-md">
           <p className="p-4 text-2xl text-center">
             {TRANSLATIONS.cart[locale]}
           </p>

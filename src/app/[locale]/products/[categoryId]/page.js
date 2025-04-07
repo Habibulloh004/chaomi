@@ -55,10 +55,12 @@ export default async function ProductsPage({ params }) {
 
   if (products?.length === 0) {
     return (
-      <div className="flex h-64 flex-col items-center justify-center p-4 text-center">
-        <h1 className="mb-4 text-xl font-semibold">
-          {parseMultiLanguageText(category.category_name, locale)}
-        </h1>
+      <div className="flex flex-col items-center justify-center p-4 text-center">
+        <div className="bg-chaomi-navy/90 my-4 w-11/12 mx-auto border-chaomi-cream text-chaomi-cream rounded-md">
+          <p className="p-4 text-2xl text-center">
+            {parseMultiLanguageText(category.category_name, locale)}
+          </p>
+        </div>
         <p className="text-gray-500">
           {locale === "uz" && "Bu kategoriyada mahsulotlar topilmadi"}
           {locale === "ru" && "В этой категории нет товаров"}
