@@ -72,7 +72,7 @@ const ProductCard = ({ product, locale }) => {
                 className="object-cover w-full aspect-square rounded-lg"
               />
             )}
-            {product.photo ? (
+            {product.photo && (
               <Image
                 src={`https://joinposter.com${
                   product.photo_origin || product.photo
@@ -83,10 +83,6 @@ const ProductCard = ({ product, locale }) => {
                 sizes="(max-width: 768px) 28vw, 112px"
                 className="object-cover w-full aspect-square rounded-lg"
               />
-            ) : (
-              <div className="flex h-full w-full items-center justify-center bg-gray-100">
-                <span className="text-gray-400">No image</span>
-              </div>
             )}
           </div>
 

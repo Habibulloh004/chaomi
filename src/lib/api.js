@@ -4,10 +4,10 @@ const API_TOKEN = "793859:9440751eda66da20c74f559a28043d2a";
 const BASE_URL = "https://joinposter.com/api";
 
 // Cache durations
-// const CATEGORIES_CACHE_DURATION = 60 * 60 * 1000; // 1 hour in milliseconds
-// const PRODUCTS_CACHE_DURATION = 30 * 60 * 1000; // 30 minutes in milliseconds
-const CATEGORIES_CACHE_DURATION = 0; // 1 hour in milliseconds
-const PRODUCTS_CACHE_DURATION = 0; // 30 minutes in milliseconds
+const CATEGORIES_CACHE_DURATION = 60 * 60 * 1000; // 1 hour in milliseconds
+const PRODUCTS_CACHE_DURATION = 30 * 60 * 1000; // 30 minutes in milliseconds
+// const CATEGORIES_CACHE_DURATION = 0; // 1 hour in milliseconds
+// const PRODUCTS_CACHE_DURATION = 0; // 30 minutes in milliseconds
 
 // Cache storage
 let cachedCategories = null;
