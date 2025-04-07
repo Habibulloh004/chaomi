@@ -50,7 +50,7 @@ export default async function ProductsPage({ params }) {
   const allProducts = await getProducts(categoryId);
   const products = allProducts.filter(
     (product) =>
-      product.menu_category_id === categoryId && product.hidden === "0"
+      product.menu_category_id == categoryId && product.hidden === "0"
   );
 
   if (products?.length === 0) {
