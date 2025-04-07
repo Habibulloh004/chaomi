@@ -89,7 +89,7 @@ const ProductCard = ({ product, locale }) => {
                 onClick={() => add(product)}
                 className="bg-chaomi-red hover:bg-chaomi-red/90 text-white px-4 py-1 rounded-md text-sm transition-colors"
               >
-                {locale == "uz" && "Q'shish"}
+                {locale == "uz" && "Qo'shish"}
                 {locale == "ru" && "Добавлять"}
                 {locale == "zh" && "添加"}
               </Button>

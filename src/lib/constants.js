@@ -88,6 +88,11 @@ export const STORE_LOCATIONS = [
 
 // App text translations
 export const TRANSLATIONS = {
+  takeaway: {
+    uz: "Olib ketish uchun",
+    ru: "На вынос",
+    zh: "外带"
+  },
   foo_welcome: {
     uz: "Ortga",
     ru: "Назад",

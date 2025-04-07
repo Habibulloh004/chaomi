@@ -2,8 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useCartStore } from "@/store/cartStore";
-import { useLanguageStore } from "@/store/languageStore";
-import { STORE_LOCATIONS } from "@/lib/constants";
+import { STORE_LOCATIONS, TRANSLATIONS } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 import { Check, MapPin } from "lucide-react";
 import { use } from "react";
@@ -11,7 +10,6 @@ import { use } from "react";
 export default function SpotsPage({ params }) {
   const { locale } = use(params);
   const router = useRouter();
-  const { language } = useLanguageStore();
   const { selectedSpot, setSelectedSpot, setDeliveryMethod } = useCartStore();
 
   const handleSelectSpot = (spot) => {
@@ -22,11 +20,11 @@ export default function SpotsPage({ params }) {
 
   return (
     <div className="p-4">
-      <h1 className="mb-6 text-center text-lg font-medium">
-        {language === "uz" && "Chayhonani tanlang"}
-        {language === "ru" && "Выберите чайхану"}
-        {language === "zh" && "选择茶馆位置"}
-      </h1>
+      <div className="bg-chaomi-navy/90 my-4 border-chaomi-cream text-chaomi-cream rounded-md">
+        <p className="p-4 text-2xl text-center">
+          {TRANSLATIONS.locations[locale]}
+        </p>
+      </div>
 
       <div className="space-y-4">
         {STORE_LOCATIONS.map((spot) => (
@@ -66,9 +64,9 @@ export default function SpotsPage({ params }) {
             router.push(`/${locale}/cart`);
           }}
         >
-          {language === "uz" && "Yetkazib berishni tanlash"}
-          {language === "ru" && "Выбрать доставку"}
-          {language === "zh" && "选择送货上门"}
+          {locale === "uz" && "Yetkazib berishni tanlash"}
+          {locale === "ru" && "Выбрать доставку"}
+          {locale === "zh" && "选择送货上门"}
         </Button>
       </div>
     </div>

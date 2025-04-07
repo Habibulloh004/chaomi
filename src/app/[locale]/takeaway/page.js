@@ -7,9 +7,10 @@ import { useLanguageStore } from "@/store/languageStore";
 import { formatPrice, formatDate, generateOrderId } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Check, MapPin, Truck } from "lucide-react";
-const Telegram = window.Telegram.WebApp;
+import { TRANSLATIONS } from "@/lib/constants";
 export default function TakeawayPage({ params }) {
   const { locale } = use(params);
+  const [telegram, setTelegram] = useState(null);
   const router = useRouter();
   const { language } = useLanguageStore();
   const {
@@ -30,6 +31,12 @@ export default function TakeawayPage({ params }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [orderId, setOrderId] = useState("");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setTelegram(window.Telegram?.WebApp);
+    }
+  }, []);
 
   // If cart is empty, redirect to cart page
   useEffect(() => {
@@ -67,8 +74,8 @@ export default function TakeawayPage({ params }) {
       };
       console.log(orderData);
 
-      Telegram.sendData(JSON.stringify(orderData)); // Отправляем данные в бота
-      Telegram.close();
+      telegram.sendData(JSON.stringify(orderData)); // Отправляем данные в бота
+      telegram.close();
       // Show success message
       addOrder({ ...orderData, products });
       setIsSuccess(true);
@@ -111,7 +118,12 @@ export default function TakeawayPage({ params }) {
 
   return (
     <div className="">
-      <form onSubmit={handleSubmit} className="space-y-6 p-4">
+      <div className="bg-chaomi-navy/90 my-4 border-chaomi-cream text-chaomi-cream rounded-md">
+        <p className="p-4 text-2xl text-center">
+          {TRANSLATIONS.takeaway[language]}
+        </p>
+      </div>
+      <form onSubmit={handleSubmit} className="space-y-6 p-4 bg-white">
         {/* Contact Information */}
         <div>
           <h2 className="mb-4 font-medium">

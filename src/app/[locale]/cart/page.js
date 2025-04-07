@@ -1,11 +1,10 @@
 "use client";
 
-import { useEffect, useState, useCallback, memo, use } from "react";
+import { useCallback, memo, use } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { useCartStore } from "@/store/cartStore";
-import { useLanguageStore } from "@/store/languageStore";
 import { TRANSLATIONS, DELIVERY_OPTIONS } from "@/lib/constants";
 import {
   formatPrice,
@@ -19,17 +18,17 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 
 // Memoized CartItem component
 const CartItem = memo(({ item, onRemove }) => {
-  const { language } = useLanguageStore();
+  const { locale } = uselocaleStore();
   const { updateQuantity } = useCartStore();
 
   const getProductName = useCallback(() => {
     let name = item?.product_name;
     const { names } = parseProductDescription(item);
     return (
-      names[language] ||
-      (name.includes("***") ? parseMultiLanguageText(name, language) : name)
+      names[locale] ||
+      (name.includes("***") ? parseMultiLanguageText(name, locale) : name)
     );
-  }, [item, language]);
+  }, [item, locale]);
 
   return (
     <div className="flex rounded-lg border border-gray-200 bg-white p-3 shadow-sm hover:shadow-md transition-shadow">
@@ -95,19 +94,15 @@ CartItem.displayName = "CartItem";
 export default function CartPage({ params }) {
   const { locale } = use(params);
   const router = useRouter();
-  const { language } = useLanguageStore();
   const {
     products,
     removeItem,
     updateQuantity,
-    clearCart,
     getSubtotal,
     getTotal,
     deliveryMethod,
     setDeliveryMethod,
     deliveryFee,
-    setTotal,
-    total
   } = useCartStore();
 
   const handleCheckout = useCallback(() => {
@@ -119,39 +114,49 @@ export default function CartPage({ params }) {
     router.push(redirectPath);
   }, [deliveryMethod, locale, router]);
 
-  if (products?.length === 0) {
+  if (products?.length == 0) {
     return (
-      <div className="flex h-64 flex-col items-center justify-center p-4 text-center">
-        <ShoppingBag className="mb-4 h-12 w-12 text-gray-400" />
-        <h2 className="mb-2 text-lg font-medium text-gray-600">
-          {language === "uz" && "Savatingiz bo'sh"}
-          {language === "ru" && "Ваша корзина пуста"}
-          {language === "zh" && "您的购物车是空的"}
-        </h2>
-        <p className="mb-6 text-sm text-gray-500">
-          {language === "uz" && "Marhamat, biror nima tanlang"}
-          {language === "ru" && "Пожалуйста, выберите что-нибудь"}
-          {language === "zh" && "请选择一些产品"}
-        </p>
-        <Link href={`/${locale}/categories`}>
-          <Button variant="chaomi">
-            {language === "uz" && "Mahsulotlarni ko'rish"}
-            {language === "ru" && "Посмотреть товары"}
-            {language === "zh" && "浏览产品"}
-          </Button>
-        </Link>
-      </div>
+      <main>
+        <div className="bg-chaomi-navy/90 my-4 border-chaomi-cream text-chaomi-cream rounded-md">
+          <p className="p-4 text-2xl text-center">
+            {TRANSLATIONS.cart[locale]}
+          </p>
+        </div>
+        <div className="flex h-64 flex-col items-center justify-center p-4 text-center">
+          <ShoppingBag className="mb-4 h-12 w-12 text-gray-400" />
+          <h2 className="mb-2 text-lg font-medium text-gray-600">
+            {locale === "uz" && "Savatingiz bo'sh"}
+            {locale === "ru" && "Ваша корзина пуста"}
+            {locale === "zh" && "您的购物车是空的"}
+          </h2>
+          <p className="mb-6 text-sm text-gray-500">
+            {locale === "uz" && "Marhamat, biror nima tanlang"}
+            {locale === "ru" && "Пожалуйста, выберите что-нибудь"}
+            {locale === "zh" && "请选择一些产品"}
+          </p>
+          <Link href={`/${locale}/categories`}>
+            <Button variant="chaomi">
+              {locale === "uz" && "Mahsulotlarni ko'rish"}
+              {locale === "ru" && "Посмотреть товары"}
+              {locale === "zh" && "浏览产品"}
+            </Button>
+          </Link>
+        </div>
+      </main>
     );
   }
   return (
     <div className="min-h-screen">
+      <div className="bg-chaomi-navy/90 my-4 border-chaomi-cream text-chaomi-cream rounded-md">
+        <p className="p-4 text-2xl text-center">{TRANSLATIONS.cart[locale]}</p>
+      </div>
       <div className="max-w-3xl mx-auto space-y-6">
         {/* Cart Items */}
 
         {/* Delivery Options */}
         <section className="border-t border-b border-gray-200 bg-white p-4 shadow-sm">
           <h2 className="mb-3 font-medium text-lg">
-            {getTranslation(TRANSLATIONS.deliveryMethod, language)}
+            {getTranslation(TRANSLATIONS.deliveryMethod, locale)}
           </h2>
           <Tabs
             value={deliveryMethod}
@@ -160,22 +165,22 @@ export default function CartPage({ params }) {
           >
             <TabsList className="grid w-full grid-cols-2 mb-4">
               <TabsTrigger value="delivery">
-                {getTranslation(DELIVERY_OPTIONS.DELIVERY.labels, language)}
+                {getTranslation(DELIVERY_OPTIONS.DELIVERY.labels, locale)}
               </TabsTrigger>
               <TabsTrigger value="pickup">
-                {getTranslation(DELIVERY_OPTIONS.PICKUP.labels, language)}
+                {getTranslation(DELIVERY_OPTIONS.PICKUP.labels, locale)}
               </TabsTrigger>
             </TabsList>
             <TabsContent value="delivery">
               <p className="text-sm text-gray-600">
-                {getTranslation(TRANSLATIONS.deliveryFee, language)}:{" "}
+                {getTranslation(TRANSLATIONS.deliveryFee, locale)}:{" "}
                 {formatPrice(deliveryFee)}
               </p>
             </TabsContent>
             <TabsContent value="pickup">
               <Link href={`/${locale}/spots`}>
                 <Button variant="outline" className="w-full">
-                  {getTranslation(TRANSLATIONS.selectSpot, language)}
+                  {getTranslation(TRANSLATIONS.selectSpot, locale)}
                 </Button>
               </Link>
             </TabsContent>
@@ -197,19 +202,19 @@ export default function CartPage({ params }) {
         {/* Order Summary */}
         <section className="p-4 bg-white shadow-sm rounded-lg">
           <h2 className="mb-4 font-medium text-lg">
-            {getTranslation(TRANSLATIONS.orderDetails, language)}
+            {getTranslation(TRANSLATIONS.orderDetails, locale)}
           </h2>
           <div className="space-y-3 border-b border-gray-200 pb-4">
             <div className="flex justify-between text-sm">
               <span className="text-gray-600">
-                {getTranslation(TRANSLATIONS.subtotal, language)}
+                {getTranslation(TRANSLATIONS.subtotal, locale)}
               </span>
               <span>{formatPrice(getSubtotal())}</span>
             </div>
             {deliveryMethod === "delivery" && (
               <div className="flex justify-between text-sm">
                 <span className="text-gray-600">
-                  {getTranslation(TRANSLATIONS.deliveryFee, language)}
+                  {getTranslation(TRANSLATIONS.deliveryFee, locale)}
                 </span>
                 <span>{formatPrice(deliveryFee)}</span>
               </div>
@@ -217,7 +222,7 @@ export default function CartPage({ params }) {
           </div>
           <div className="mt-4 flex justify-between items-center">
             <span className="font-medium">
-              {getTranslation(TRANSLATIONS.total, language)}
+              {getTranslation(TRANSLATIONS.total, locale)}
             </span>
             <span className="text-lg font-bold text-chaomi-red">
               {formatPrice(getTotal())}
@@ -232,7 +237,7 @@ export default function CartPage({ params }) {
             className="w-full py-3"
             onClick={handleCheckout}
           >
-            {getTranslation(TRANSLATIONS.checkout, language)}
+            {getTranslation(TRANSLATIONS.checkout, locale)}
           </Button>
         </div>
       </div>
