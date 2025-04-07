@@ -1,6 +1,5 @@
 // API token for the Poster API
 
-
 const API_TOKEN = "793859:9440751eda66da20c74f559a28043d2a";
 const BASE_URL = "https://joinposter.com/api";
 
@@ -157,29 +156,33 @@ export const parseProductDescription = (product) => {
     };
   }
 
-  const desc = product.product_production_description;
-  const names = {};
-  const descriptions = {};
+  let desc = product.product_production_description;
 
-  // Extract names
-  const nameUzMatch = /<name_uz>(.*?)<\/name_uz>/s.exec(desc);
-  const nameRuMatch = /<name_ru>(.*?)<\/name_ru>/s.exec(desc);
-  const nameZhMatch = /<name_zh>(.*?)<\/name_zh>/s.exec(desc);
+  // 🛠️ Fix broken or malformed tags
+  desc = desc.replace(
+    /<\/description_ru>(.*?)<\/description_ru>/s,
+    "<description_ru>$1</description_ru>"
+  );
+  desc = desc.replace(/description_hz/g, "description_zh");
+  desc = desc.replace(/<description_uz>>/g, "<description_uz>");
 
-  if (nameUzMatch) names.uz = nameUzMatch[1].trim();
-  if (nameRuMatch) names.ru = nameRuMatch[1].trim();
-  if (nameZhMatch) names.zh = nameZhMatch[1].trim();
+  const extract = (tag) => {
+    const match = new RegExp(`<${tag}>([\\s\\S]*?)<\\/${tag}>`, "i").exec(desc);
+    return match ? match[1].trim() : null;
+  };
 
-  // Extract descriptions
-  const descUzMatch = /<description_uz>(.*?)<\/description_uz>/s.exec(desc);
-  const descRuMatch = /<description_ru>(.*?)<\/description_ru>/s.exec(desc);
-  const descZhMatch = /<description_zh>(.*?)<\/description_zh>/s.exec(desc);
-
-  if (descUzMatch) descriptions.uz = descUzMatch[1].trim();
-  if (descRuMatch) descriptions.ru = descRuMatch[1].trim();
-  if (descZhMatch) descriptions.zh = descZhMatch[1].trim();
-
-  return { names, descriptions };
+  return {
+    names: {
+      uz: extract("name_uz"),
+      ru: extract("name_ru"),
+      zh: extract("name_zh"),
+    },
+    descriptions: {
+      uz: extract("description_uz"),
+      ru: extract("description_ru"),
+      zh: extract("description_zh"),
+    },
+  };
 };
 
 /**
