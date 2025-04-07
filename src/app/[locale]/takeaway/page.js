@@ -3,7 +3,6 @@
 import { use, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useCartStore } from "@/store/cartStore";
-import { useLanguageStore } from "@/store/languageStore";
 import { formatPrice, formatDate, generateOrderId } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Check, MapPin, Truck } from "lucide-react";
@@ -12,7 +11,6 @@ export default function TakeawayPage({ params }) {
   const { locale } = use(params);
   const [telegram, setTelegram] = useState(null);
   const router = useRouter();
-  const { language } = useLanguageStore();
   const {
     products,
     deliveryMethod,
@@ -97,20 +95,20 @@ export default function TakeawayPage({ params }) {
           <Check className="h-8 w-8 text-green-600" />
         </div>
         <h2 className="mb-2 text-xl font-medium text-green-600">
-          {language === "uz" && "Buyurtmangiz qabul qilindi!"}
-          {language === "ru" && "Ваш заказ принят!"}
-          {language === "zh" && "您的订单已接收！"}
+          {locale === "uz" && "Buyurtmangiz qabul qilindi!"}
+          {locale === "ru" && "Ваш заказ принят!"}
+          {locale === "zh" && "您的订单已接收！"}
         </h2>
         <p className="mb-1 text-gray-600">
-          {language === "uz" && "Buyurtma raqami:"}
-          {language === "ru" && "Номер заказа:"}
-          {language === "zh" && "订单号："}{" "}
+          {locale === "uz" && "Buyurtma raqami:"}
+          {locale === "ru" && "Номер заказа:"}
+          {locale === "zh" && "订单号："}{" "}
           <span className="font-medium">{orderId}</span>
         </p>
         <p className="text-sm text-gray-500">
-          {language === "uz" && "Tez orada siz bilan bog'lanamiz"}
-          {language === "ru" && "Мы скоро свяжемся с вами"}
-          {language === "zh" && "我们很快会与您联系"}
+          {locale === "uz" && "Tez orada siz bilan bog'lanamiz"}
+          {locale === "ru" && "Мы скоро свяжемся с вами"}
+          {locale === "zh" && "我们很快会与您联系"}
         </p>
       </div>
     );
@@ -120,16 +118,16 @@ export default function TakeawayPage({ params }) {
     <div className="">
       <div className="bg-chaomi-navy/90 my-4 border-chaomi-cream text-chaomi-cream rounded-md">
         <p className="p-4 text-2xl text-center">
-          {TRANSLATIONS.takeaway[language]}
+          {TRANSLATIONS.takeaway[locale]}
         </p>
       </div>
       <form onSubmit={handleSubmit} className="space-y-6 p-4 bg-white">
         {/* Contact Information */}
         <div>
           <h2 className="mb-4 font-medium">
-            {language === "uz" && "Aloqa ma'lumotlari"}
-            {language === "ru" && "Контактная информация"}
-            {language === "zh" && "联系信息"}
+            {locale === "uz" && "Aloqa ma'lumotlari"}
+            {locale === "ru" && "Контактная информация"}
+            {locale === "zh" && "联系信息"}
           </h2>
 
           <div className="space-y-3">
@@ -138,9 +136,9 @@ export default function TakeawayPage({ params }) {
                 htmlFor="name"
                 className="mb-1 block text-sm font-medium text-gray-700"
               >
-                {language === "uz" && "Ism"}
-                {language === "ru" && "Имя"}
-                {language === "zh" && "名字"}
+                {locale === "uz" && "Ism"}
+                {locale === "ru" && "Имя"}
+                {locale === "zh" && "名字"}
               </label>
               <input
                 type="text"
@@ -157,9 +155,9 @@ export default function TakeawayPage({ params }) {
                 htmlFor="phone"
                 className="mb-1 block text-sm font-medium text-gray-700"
               >
-                {language === "uz" && "Telefon raqami"}
-                {language === "ru" && "Номер телефона"}
-                {language === "zh" && "电话号码"}
+                {locale === "uz" && "Telefon raqami"}
+                {locale === "ru" && "Номер телефона"}
+                {locale === "zh" && "电话号码"}
               </label>
               <input
                 type="tel"
@@ -178,9 +176,9 @@ export default function TakeawayPage({ params }) {
         {deliveryMethod === "delivery" && (
           <div>
             <h2 className="mb-4 font-medium">
-              {language === "uz" && "Yetkazib berish ma'lumotlari"}
-              {language === "ru" && "Информация о доставке"}
-              {language === "zh" && "配送信息"}
+              {locale === "uz" && "Yetkazib berish ma'lumotlari"}
+              {locale === "ru" && "Информация о доставке"}
+              {locale === "zh" && "配送信息"}
             </h2>
 
             <div>
@@ -188,9 +186,9 @@ export default function TakeawayPage({ params }) {
                 htmlFor="address"
                 className="mb-1 block text-sm font-medium text-gray-700"
               >
-                {language === "uz" && "Manzil"}
-                {language === "ru" && "Адрес"}
-                {language === "zh" && "地址"}
+                {locale === "uz" && "Manzil"}
+                {locale === "ru" && "Адрес"}
+                {locale === "zh" && "地址"}
               </label>
               <textarea
                 id="address"
@@ -208,9 +206,9 @@ export default function TakeawayPage({ params }) {
         {deliveryMethod === "pickup" && selectedSpot && (
           <div>
             <h2 className="mb-4 font-medium">
-              {language === "uz" && "Olib ketish joyi"}
-              {language === "ru" && "Место самовывоза"}
-              {language === "zh" && "自取地点"}
+              {locale === "uz" && "Olib ketish joyi"}
+              {locale === "ru" && "Место самовывоза"}
+              {locale === "zh" && "自取地点"}
             </h2>
 
             <div className="flex items-start rounded-lg border border-gray-200 bg-gray-50 p-4">
@@ -231,9 +229,9 @@ export default function TakeawayPage({ params }) {
             htmlFor="notes"
             className="mb-1 block text-sm font-medium text-gray-700"
           >
-            {language === "uz" && "Qo'shimcha ma'lumotlar"}
-            {language === "ru" && "Дополнительная информация"}
-            {language === "zh" && "附加说明"}
+            {locale === "uz" && "Qo'shimcha ma'lumotlar"}
+            {locale === "ru" && "Дополнительная информация"}
+            {locale === "zh" && "附加说明"}
           </label>
           <textarea
             id="notes"
@@ -242,9 +240,9 @@ export default function TakeawayPage({ params }) {
             rows={2}
             className="w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-chaomi-red focus:outline-none focus:ring-1 focus:ring-chaomi-red"
             placeholder={
-              language === "uz"
+              locale === "uz"
                 ? "Buyurtmangiz haqida qo'shimcha ma'lumotlar"
-                : language === "ru"
+                : locale === "ru"
                 ? "Дополнительная информация о вашем заказе"
                 : "关于您订单的其他信息"
             }
@@ -254,9 +252,9 @@ export default function TakeawayPage({ params }) {
         {/* Order Summary */}
         <div>
           <h2 className="mb-4 font-medium">
-            {language === "uz" && "Buyurtma tafsilotlari"}
-            {language === "ru" && "Детали заказа"}
-            {language === "zh" && "订单详情"}
+            {locale === "uz" && "Buyurtma tafsilotlari"}
+            {locale === "ru" && "Детали заказа"}
+            {locale === "zh" && "订单详情"}
           </h2>
 
           <div className="rounded-lg border border-gray-200 bg-white p-4">
@@ -266,18 +264,18 @@ export default function TakeawayPage({ params }) {
                 <>
                   <Truck className="mr-2 h-5 w-5 text-chaomi-navy" />
                   <span className="text-sm">
-                    {language === "uz" && "Yetkazib berish"}
-                    {language === "ru" && "Доставка"}
-                    {language === "zh" && "送货上门"}
+                    {locale === "uz" && "Yetkazib berish"}
+                    {locale === "ru" && "Доставка"}
+                    {locale === "zh" && "送货上门"}
                   </span>
                 </>
               ) : (
                 <>
                   <MapPin className="mr-2 h-5 w-5 text-chaomi-navy" />
                   <span className="text-sm">
-                    {language === "uz" && "Olib ketish"}
-                    {language === "ru" && "Самовывоз"}
-                    {language === "zh" && "自取"}
+                    {locale === "uz" && "Olib ketish"}
+                    {locale === "ru" && "Самовывоз"}
+                    {locale === "zh" && "自取"}
                   </span>
                 </>
               )}
@@ -286,22 +284,22 @@ export default function TakeawayPage({ params }) {
             {/* Items Count */}
             <div className="mb-3 flex justify-between border-b border-gray-100 pb-3">
               <span className="text-sm text-gray-600">
-                {language === "uz" && "Mahsulotlar"}
-                {language === "ru" && "Товары"}
-                {language === "zh" && "产品"}
+                {locale === "uz" && "Mahsulotlar"}
+                {locale === "ru" && "Товары"}
+                {locale === "zh" && "产品"}
               </span>
               <span className="text-sm">
                 {products?.length}{" "}
-                {language === "uz" ? "ta" : language === "ru" ? "шт" : "件"}
+                {locale === "uz" ? "ta" : locale === "ru" ? "шт" : "件"}
               </span>
             </div>
 
             {/* Subtotal */}
             <div className="flex justify-between">
               <span className="text-sm text-gray-600">
-                {language === "uz" && "Oraliq jami"}
-                {language === "ru" && "Промежуточный итог"}
-                {language === "zh" && "小计"}
+                {locale === "uz" && "Oraliq jami"}
+                {locale === "ru" && "Промежуточный итог"}
+                {locale === "zh" && "小计"}
               </span>
               <span className="text-sm">{formatPrice(getSubtotal())}</span>
             </div>
@@ -310,9 +308,9 @@ export default function TakeawayPage({ params }) {
             {deliveryMethod === "delivery" && (
               <div className="mt-2 flex justify-between">
                 <span className="text-sm text-gray-600">
-                  {language === "uz" && "Yetkazib berish narxi"}
-                  {language === "ru" && "Стоимость доставки"}
-                  {language === "zh" && "配送费"}
+                  {locale === "uz" && "Yetkazib berish narxi"}
+                  {locale === "ru" && "Стоимость доставки"}
+                  {locale === "zh" && "配送费"}
                 </span>
                 <span className="text-sm">{formatPrice(deliveryFee)}</span>
               </div>
@@ -321,9 +319,9 @@ export default function TakeawayPage({ params }) {
             {/* Total */}
             <div className="mt-3 flex justify-between border-t border-gray-100 pt-3">
               <span className="font-medium">
-                {language === "uz" && "Jami"}
-                {language === "ru" && "Итого"}
-                {language === "zh" && "总计"}
+                {locale === "uz" && "Jami"}
+                {locale === "ru" && "Итого"}
+                {locale === "zh" && "总计"}
               </span>
               <span className="font-bold text-chaomi-red">
                 {formatPrice(getTotal())}
@@ -358,15 +356,15 @@ export default function TakeawayPage({ params }) {
                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                   />
                 </svg>
-                {language === "uz" && "Ishlov berilmoqda..."}
-                {language === "ru" && "Обработка..."}
-                {language === "zh" && "处理中..."}
+                {locale === "uz" && "Ishlov berilmoqda..."}
+                {locale === "ru" && "Обработка..."}
+                {locale === "zh" && "处理中..."}
               </>
             ) : (
               <>
-                {language === "uz" && "Buyurtma berish"}
-                {language === "ru" && "Оформить заказ"}
-                {language === "zh" && "提交订单"}
+                {locale === "uz" && "Buyurtma berish"}
+                {locale === "ru" && "Оформить заказ"}
+                {locale === "zh" && "提交订单"}
               </>
             )}
           </Button>
