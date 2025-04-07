@@ -17,8 +17,7 @@ import { ShoppingBag, Trash2, Plus, Minus } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 
 // Memoized CartItem component
-const CartItem = memo(({ item, onRemove }) => {
-  const { locale } = uselocaleStore();
+const CartItem = memo(({ item, onRemove, locale }) => {
   const { updateQuantity } = useCartStore();
 
   const getProductName = useCallback(() => {
@@ -116,8 +115,8 @@ export default function CartPage({ params }) {
 
   if (products?.length == 0) {
     return (
-      <main>
-        <div className="bg-chaomi-navy/90 my-4 w-11/12 mx-auto border-chaomi-cream text-chaomi-cream rounded-md">
+      <main className="p-4">
+        <div className="bg-chaomi-navy/90 mb-4 mx-auto border-chaomi-cream text-chaomi-cream rounded-md">
           <p className="p-4 text-2xl text-center">
             {TRANSLATIONS.cart[locale]}
           </p>
@@ -146,8 +145,8 @@ export default function CartPage({ params }) {
     );
   }
   return (
-    <div className="min-h-screen">
-      <div className="bg-chaomi-navy/90 my-4 border-chaomi-cream text-chaomi-cream rounded-md">
+    <div className="min-h-screen p-4">
+      <div className="bg-chaomi-navy/90 mb-4 border-chaomi-cream text-chaomi-cream rounded-md">
         <p className="p-4 text-2xl text-center">{TRANSLATIONS.cart[locale]}</p>
       </div>
       <div className="max-w-3xl mx-auto space-y-6">
