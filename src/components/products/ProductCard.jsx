@@ -58,7 +58,7 @@ const ProductCard = ({ product, locale }) => {
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <article
-          className="overflow-hidden rounded-lg flex items-center bg-chaomi-navy/90 border-chaomi-cream text-chaomi-cream shadow-md transition-all hover:shadow-lg p-3 relative cursor-pointer"
+          className="overflow-hidden mx-auto rounded-lg flex items-center bg-chaomi-navy/90 border-chaomi-cream text-chaomi-cream shadow-md transition-all hover:shadow-lg p-3 relative cursor-pointer"
           onClick={() => setIsOpen(true)}
         >
           <div className="relative aspect-square w-28">
@@ -86,8 +86,8 @@ const ProductCard = ({ product, locale }) => {
             )}
           </div>
 
-          <div className="p-3 w-[calc(100%-120px)] flex flex-col relative">
-            <h3 className="mb-2 text-sm font-medium line-clamp-2">
+          <div className="pl-3 w-[calc(100%-120px)] flex flex-col justify-between h-28">
+            <h3 className="my-2 text-sm font-medium line-clamp-2">
               {productName}
             </h3>
             <div className="mt-auto flex items-center justify-between">
@@ -97,7 +97,7 @@ const ProductCard = ({ product, locale }) => {
                 {locale == "zh" && "索姆"}
               </p>
 
-              <div className="flex items-center gap-2 absolute -right-2 -bottom-5">
+              <div className="flex items-center gap-2">
                 {quantity === 0 ? (
                   <Button
                     onClick={(e) => {
