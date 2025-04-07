@@ -1,4 +1,6 @@
 // API token for the Poster API
+
+
 const API_TOKEN = "793859:9440751eda66da20c74f559a28043d2a";
 const BASE_URL = "https://joinposter.com/api";
 

@@ -178,4 +178,31 @@ export const TRANSLATIONS = {
     ru: "Оформить заказ",
     zh: "结账",
   },
+  subtotal:{
+    uz: "Umumiy narxi",
+    ru: "Общая стоимость",
+    zh: "总计",
+  },
+  selectSpot:{
+    uz: "Manzilni tanlash",
+    ru: "Выбрать заведение",
+    zh: "选择",
+  },
+  delivery:{
+    uz: "Yetkazib berish",
+    ru: "Доставка",
+    zh: "送货",
+  },
+  pickup:{
+    uz: "Olib ketish",
+    ru: "Самовывоз",
+    zh: "捡起",
+  },
+  service:{
+    uz:"Xizmat turi",
+    ru:"Услуга",
+    zh:"服务",
+  },
+  selectCategory:{
+  }
 };

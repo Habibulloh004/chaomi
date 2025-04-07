@@ -38,7 +38,7 @@ const Footer = ({ locale }) => {
 
   return (
     <footer className="fixed bottom-0 left-0 right-0 z-50 border-t border-gray-200 bg-primary/80">
-      <nav className="flex h-16 items-center justify-around">
+      <nav className="max-w-md mx-auto flex h-16 items-center justify-around">
         {navItems.map((item) => {
           const isActive =
             item.name === "home"

@@ -6,6 +6,7 @@ import { parseMultiLanguageText, formatPrice } from "@/lib/utils";
 import { parseProductDescription } from "@/lib/api";
 import { Button } from "../ui/button";
 import { useCartStore } from "@/store/cartStore";
+import { Plus, Minus, Trash2 } from "lucide-react"; // Assuming you're using lucide-react for icons
 
 const ProductCard = ({ product, locale }) => {
   const { products, add, removeItem, updateQuantity } = useCartStore();
@@ -14,7 +15,6 @@ const ProductCard = ({ product, locale }) => {
   // Determine price - Poster API can store prices differently
   let price = 0;
   if (product.price && typeof product.price === "object") {
-    // If price is an object, find the first non-zero price
     const priceValues = Object.values(product.price);
     for (const val of priceValues) {
       if (val && val > 0) {
@@ -28,26 +28,22 @@ const ProductCard = ({ product, locale }) => {
 
   // Get multilingual product name
   let productName = product.product_name;
-
-  // Check if we have a language-specific name in the description
   if (product.product_production_description) {
     const { names } = parseProductDescription(product);
     if (names[locale]) {
       productName = names[locale];
     }
   }
-
-  // If name still has language separators, parse them
   if (productName.includes("***")) {
     productName = parseMultiLanguageText(productName, locale);
   }
 
+  // Find product in cart to get current quantity
+  const cartProduct = products.find((p) => p.product_id === product.product_id);
+  const quantity = cartProduct ? cartProduct.count : 0;
 
   return (
-    <article
-      // href={`/${locale}/product/${product.product_id}`}
-      className="overflow-hidden rounded-lg flex items-center bg-chaomi-navy/90 border-chaomi-cream text-chaomi-cream shadow-md transition-all hover:shadow-lg p-3 relative"
-    >
+    <article className="overflow-hidden rounded-lg flex items-center bg-chaomi-navy/90 border-chaomi-cream text-chaomi-cream shadow-md transition-all hover:shadow-lg p-3 relative">
       <div className="relative aspect-square w-28">
         {product.photo == "" && (
           <Image
@@ -77,85 +73,62 @@ const ProductCard = ({ product, locale }) => {
         )}
       </div>
 
-      <div className="p-3 w-[calc(100%-120px)]">
-        <h3 className="mb-2 text-sm font-medium line-clamp-2">
-          {product.product_name}
-        </h3>
+      <div className="p-3 w-[calc(100%-120px)] flex flex-col">
         <h3 className="mb-2 text-sm font-medium line-clamp-2">{productName}</h3>
 
-        <div className="mt-auto text-sm font-semibold text-chaomi-red">
-          <p>
+        <div className="mt-auto flex items-center justify-between">
+          <p className="text-sm font-semibold text-chaomi-red">
             {formatPrice(Number(price) / 100)} {locale == "uz" && "so'm"}
             {locale == "ru" && "сум"}
             {locale == "zh" && "索姆"}
           </p>
-          {/* {!findProduct ? (
-            <div className="flex justify-end items-center gap-2">
-              <button
-                aria-label={`shcard plus`}
-                disabled={paymentData && paymentData.payment_id}
-                onClick={handleAddProduct}
-                className="rounded-md px-3 py-[10px] bg-primary active:bg-primary-modal text-white text-xs"
+
+          <div className="flex items-center gap-2">
+            {quantity === 0 ? (
+              <Button
+                onClick={() => add(product)}
+                className="bg-chaomi-red hover:bg-chaomi-red/90 text-white px-4 py-1 rounded-md text-sm transition-colors"
               >
-                {all("add")}
-              </button>
-            </div>
-          ) : (
-            <div className="flex justify-end items-center gap-2">
-              <div className="max-sm:w-full flex justify-around sm:justify-center items-center gap-1 bg-primary rounded-md">
-                <button
-                  aria-label={`shcard plus2`}
-                  disabled={paymentData && paymentData.payment_id}
-                  onClick={handleIncrementCount}
-                  className="max-sm:w-full rounded-l-md p-2 bg-primary active:bg-gradient-to-r active:from-white/20 active:to-primary"
+                {locale == "uz" && "Q'shish"}
+                {locale == "ru" && "Добавлять"}
+                {locale == "zh" && "添加"}
+              </Button>
+            ) : (
+              <>
+                <div className="flex items-center bg-chaomi-cream/20 rounded-md">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => updateQuantity(product.product_id, 1)}
+                    className="p-1 hover:bg-chaomi-cream/30 text-chaomi-cream"
+                  >
+                    <Minus className="w-4 h-4" />
+                  </Button>
+                  <span className="w-8 text-center text-sm font-medium">
+                    {quantity < 10 ? `0${quantity}` : quantity}
+                  </span>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => updateQuantity(product.product_id, -1)}
+                    className="p-1 hover:bg-chaomi-cream/30 text-chaomi-cream"
+                  >
+                    <Plus className="w-4 h-4" />
+                  </Button>
+                </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => removeItem(product.product_id)}
+                  className="p-1 text-chaomi-red hover:bg-chaomi-red/20 hover:text-chaomi-red transition-colors"
                 >
-                  <Plus
-                    className="text-white max-md:w-4 max-md:h-4 w-5 h-5"
-                    size={18}
-                  />
-                </button>
-                <span className="font-bold text-[12px] md:textSmall4 text-white min-w-6 text-center">
-                  {findProduct.count >= 10
-                    ? findProduct.count
-                    : `0${findProduct.count}`}
-                </span>
-                <button
-                  aria-label={`shcard minus`}
-                  disabled={paymentData && paymentData.payment_id}
-                  onClick={handleDecrementCount}
-                  className="max-sm:flex justify-center items-center max-sm:w-full rounded-r-md p-2 bg-primary active:bg-gradient-to-l active:from-white/20 active:to-primary"
-                >
-                  <Minus className="text-white max-md:w-4 max-md:h-4 w-5 h-5" />
-                </button>
-              </div>
-            </div>
-          )} */}
-          <Button
-            
-            onClick={() => {
-              add(product.product_id);
-            }}
-          >
-            add
-          </Button>
-          <button
-            onClick={() => {
-              removeItem(product.product_id);
-            }}
-          >
-            remove
-          </button>
-          <button
-            onClick={() => {
-              updateQuantity(product.product_id);
-            }}
-          >
-            minus
-          </button>
+                  <Trash2 className="w-4 h-4" />
+                </Button>
+              </>
+            )}
+          </div>
         </div>
       </div>
-
-      {/* <CornerDownRight className="absolute bottom-3 right-3" /> */}
     </article>
   );
 };

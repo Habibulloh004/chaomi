@@ -5,14 +5,19 @@ export const useCartStore = create(
   persist(
     (set, get) => ({
       products: [],
+      myOrders: [],
       deliveryMethod: "delivery",
-      phone: 30000, // Default delivery fee
-      spot_id: null,
-
+      deliveryFee: 30000, // Default delivery fee
+      selectedSpot: null,
+      addOrder: (order) => {
+        set({ myOrders: [...get().myOrders, order] });
+      },
       add: (product, count = 1) => {
         const { products } = get();
+        console.log(product);
+
         const existingProductsIndex = products.findIndex(
-          (item) => item.product_id === product
+          (item) => item.product_id == product?.product_id
         );
         if (products.length > 0 && existingProductsIndex >= 0) {
           const updatedItems = [...products];
@@ -23,14 +28,16 @@ export const useCartStore = create(
             products: [
               ...products,
               {
-                product_id: product,
+                ...product,
                 count,
               },
             ],
           });
         }
       },
-
+      setTotal: (total) => {
+        set({ total });
+      },
       removeItem: (itemId) => {
         set({
           products: get().products.filter((item) => item.product_id !== itemId),
@@ -53,7 +60,7 @@ export const useCartStore = create(
       },
 
       clearCart: () => {
-        set({ products: [] }); // "items" o‘rniga "products" ga o‘zgartirdim
+        set({ products: [], selectedSpot: null });
       },
 
       setDeliveryMethod: (method) => {
@@ -61,18 +68,23 @@ export const useCartStore = create(
       },
 
       setSelectedSpot: (spot) => {
-        set({ spot_id: spot }); // "selectedSpot" o‘rniga "spot_id" ga o‘zgartirdim
+        set({ selectedSpot: spot }); // "selectedSpot" o‘rniga "spot_id" ga o‘zgartirdim
       },
 
       getSubtotal: () => {
+        const roundToTwoDecimals = (value) => {
+          return Number((Math.round(value * 100) / 100).toFixed(2));
+        };
         return get().products.reduce((sum, item) => {
-          return sum + (item.price || 0) * item.count; // "items" o‘rniga "products"
+          return roundToTwoDecimals(
+            +sum + +(+item?.price["1"] / 100 || 0) * item.count
+          ); // "items" o‘rniga "products"
         }, 0);
       },
 
       getTotal: () => {
         const subtotal = get().getSubtotal();
-        const { deliveryMethod, phone: deliveryFee } = get();
+        const { deliveryMethod, deliveryFee } = get();
         return deliveryMethod === "delivery"
           ? subtotal + deliveryFee
           : subtotal;

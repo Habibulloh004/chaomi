@@ -12,13 +12,19 @@ export default async function LocaleLayout({ children, params }) {
   return (
     <main className="chaomi-container relative">
       <Suspense fallback={<div className="p-4">Loading...</div>}>
-        <Image
-          src={"/images/background.png"}
-          alt="background"
-          width={100}
-          height={100}
-          className="fixed top-0 left-0 w-[100vw] h-[100vh] -z-50 object-cover"
-        />
+        <div className="fixed top-0 left-0 inset-0 w-full h-screen -z-50">
+          <Image
+            src={"/images/background.png"}
+            alt={"img"}
+            layout="fill"
+            objectFit="cover"
+            objectPosition="bottom"
+            priority
+            quality={100}
+            loading="eager"
+            className="-z-50"
+          />
+        </div>
         <div className="flex-1 pb-16">{children}</div>
         <Footer locale={locale} />
       </Suspense>

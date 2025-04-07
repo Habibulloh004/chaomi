@@ -1,25 +1,26 @@
 "use client";
 
-import { use, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useCartStore } from "@/store/cartStore";
 import { useLanguageStore } from "@/store/languageStore";
 import { formatPrice, formatDate, generateOrderId } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Check, MapPin, Truck } from "lucide-react";
-
+const Telegram = window.Telegram.WebApp;
 export default function TakeawayPage({ params }) {
   const { locale } = use(params);
   const router = useRouter();
   const { language } = useLanguageStore();
   const {
-    items,
+    products,
     deliveryMethod,
     selectedSpot,
     getSubtotal,
     getTotal,
     deliveryFee,
     clearCart,
+    addOrder,
   } = useCartStore();
 
   const [name, setName] = useState("");
@@ -31,10 +32,12 @@ export default function TakeawayPage({ params }) {
   const [orderId, setOrderId] = useState("");
 
   // If cart is empty, redirect to cart page
-  if (items.length === 0) {
-    router.push(`/${locale}/cart`);
-    return null;
-  }
+  useEffect(() => {
+    if (products?.length === 0) {
+      router.push(`/${locale}/cart`);
+      return null;
+    }
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -44,19 +47,33 @@ export default function TakeawayPage({ params }) {
       // Generate a unique order ID
       const newOrderId = generateOrderId();
       setOrderId(newOrderId);
+      const orderData = {
+        id: newOrderId,
+        name,
+        phone,
+        address,
+        products: products?.map((product) => {
+          return {
+            product_id: product?.product_id,
+            count: product?.count,
+          };
+        }),
+        service_mode: deliveryMethod == "delivery" ? 3 : 2,
+        spot_id: selectedSpot?.id,
+        all_price: getTotal(),
+        delivery_price: deliveryFee,
+        comment: notes,
+        date: new Date().toISOString(),
+      };
+      console.log(orderData);
 
-      // In a real app, you would send the order to your backend here
-      // For now, we'll just simulate a successful order
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-
+      Telegram.sendData(JSON.stringify(orderData)); // Отправляем данные в бота
+      Telegram.close();
       // Show success message
+      addOrder({ ...orderData, products });
       setIsSuccess(true);
-
-      // Clear the cart
-      clearCart();
-
-      // After a few seconds, redirect to the profile page
       setTimeout(() => {
+        clearCart();
         router.push(`/${locale}/profile`);
       }, 3000);
     } catch (error) {
@@ -93,7 +110,7 @@ export default function TakeawayPage({ params }) {
   }
 
   return (
-    <div className="pb-24">
+    <div className="">
       <form onSubmit={handleSubmit} className="space-y-6 p-4">
         {/* Contact Information */}
         <div>
@@ -262,7 +279,7 @@ export default function TakeawayPage({ params }) {
                 {language === "zh" && "产品"}
               </span>
               <span className="text-sm">
-                {items.length}{" "}
+                {products?.length}{" "}
                 {language === "uz" ? "ta" : language === "ru" ? "шт" : "件"}
               </span>
             </div>
@@ -304,7 +321,7 @@ export default function TakeawayPage({ params }) {
         </div>
 
         {/* Submit Button */}
-        <div className="fixed bottom-0 left-0 right-0 bg-white p-4 shadow-lg">
+        <div className="bg-white p-4 shadow-lg">
           <Button
             type="submit"
             variant="chaomiRed"

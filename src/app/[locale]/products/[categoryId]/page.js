@@ -53,7 +53,7 @@ export default async function ProductsPage({ params }) {
       product.menu_category_id === categoryId && product.hidden === "0"
   );
 
-  if (products.length === 0) {
+  if (products?.length === 0) {
     return (
       <div className="flex h-64 flex-col items-center justify-center p-4 text-center">
         <h1 className="mb-4 text-xl font-semibold">
@@ -77,8 +77,9 @@ export default async function ProductsPage({ params }) {
       </div>
 
       <div className="space-y-4">
-        {products.map((product) => (
+        {products?.map((product) => (
           <ProductCard
+            allProducts={allProducts}
             key={product.product_id}
             product={product}
             locale={locale}
