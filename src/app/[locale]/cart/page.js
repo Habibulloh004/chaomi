@@ -53,7 +53,9 @@ const CartItem = memo(({ item, onRemove, locale }) => {
 
         <div className="mt-2 flex items-center justify-between">
           <div className="text-sm font-semibold text-chaomi-red">
-            {formatPrice(item.price["1"] / 100)}
+            {formatPrice(item.price["1"] / 100)} {locale == "uz" && "so'm"}
+                {locale == "ru" && "сум"}
+                {locale == "zh" && "索姆"}
           </div>
 
           <div className="flex items-center gap-2">
@@ -170,12 +172,12 @@ export default function CartPage({ params }) {
                 {getTranslation(DELIVERY_OPTIONS.PICKUP.labels, locale)}
               </TabsTrigger>
             </TabsList>
-            <TabsContent value="delivery">
+            {/* <TabsContent value="delivery">
               <p className="text-sm text-gray-600">
                 {getTranslation(TRANSLATIONS.deliveryFee, locale)}:{" "}
                 {formatPrice(deliveryFee)}
               </p>
-            </TabsContent>
+            </TabsContent> */}
             <TabsContent value="pickup">
               <Link href={`/${locale}/spots`}>
                 <Button variant="outline" className="w-full">
@@ -208,23 +210,27 @@ export default function CartPage({ params }) {
               <span className="text-gray-600">
                 {getTranslation(TRANSLATIONS.subtotal, locale)}
               </span>
-              <span>{formatPrice(getSubtotal())}</span>
+              <span>{formatPrice(getSubtotal())} {locale == "uz" && "so'm"}
+                {locale == "ru" && "сум"}
+                {locale == "zh" && "索姆"}</span>
             </div>
-            {deliveryMethod === "delivery" && (
+            {/* {deliveryMethod === "delivery" && (
               <div className="flex justify-between text-sm">
                 <span className="text-gray-600">
                   {getTranslation(TRANSLATIONS.deliveryFee, locale)}
                 </span>
                 <span>{formatPrice(deliveryFee)}</span>
               </div>
-            )}
+            )} */}
           </div>
           <div className="mt-4 flex justify-between items-center">
             <span className="font-medium">
               {getTranslation(TRANSLATIONS.total, locale)}
             </span>
             <span className="text-lg font-bold text-chaomi-red">
-              {formatPrice(getTotal())}
+              {formatPrice(getTotal())} {locale == "uz" && "so'm"}
+                {locale == "ru" && "сум"}
+                {locale == "zh" && "索姆"}
             </span>
           </div>
         </section>

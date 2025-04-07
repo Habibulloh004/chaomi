@@ -84,9 +84,9 @@ export const useCartStore = create(
 
       getTotal: () => {
         const subtotal = get().getSubtotal();
-        const { deliveryMethod, deliveryFee } = get();
+        const { deliveryMethod } = get();
         return deliveryMethod === "delivery"
-          ? subtotal + deliveryFee
+          ? subtotal
           : subtotal;
       },
 
