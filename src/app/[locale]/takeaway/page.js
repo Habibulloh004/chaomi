@@ -68,7 +68,7 @@ export default function TakeawayPage({ params }) {
         service_mode: deliveryMethod == "delivery" ? 3 : 2,
         spot_id: selectedSpot?.id,
         all_price: getTotal(),
-        delivery_price: deliveryFee,
+        // delivery_price: deliveryFee,
         comment: notes,
         date: new Date().toISOString(),
       };

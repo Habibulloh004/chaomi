@@ -7,7 +7,7 @@ export const useCartStore = create(
       products: [],
       myOrders: [],
       deliveryMethod: "delivery",
-      deliveryFee: 30000, // Default delivery fee
+      // deliveryFee: 30000, // Default delivery fee
       selectedSpot: null,
       addOrder: (order) => {
         set({ myOrders: [...get().myOrders, order] });

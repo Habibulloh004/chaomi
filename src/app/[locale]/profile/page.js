@@ -92,7 +92,7 @@ export default function ProfilePage({ params }) {
                       </span>
                     </div>
                   )}
-                  {order?.delivery_price && order?.service_mode == 3 && (
+                  {/* {order?.delivery_price && order?.service_mode == 3 && (
                     <div className="flex justify-between border-t border-gray-100 pt-2 text-sm">
                       <span className="font-semibold text-gray-700">
                         {TRANSLATIONS.deliveryFee[locale]}
@@ -101,7 +101,7 @@ export default function ProfilePage({ params }) {
                         {formatPrice(order?.delivery_price)}
                       </span>
                     </div>
-                  )}
+                  )} */}
                   <div className="flex justify-between border-t border-gray-100 pt-2 text-sm">
                     <span className="font-semibold text-gray-700">
                       {TRANSLATIONS.total[locale]}
