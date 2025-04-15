@@ -72,7 +72,7 @@ export default function TakeawayPage({ params }) {
       };
       console.log(orderData);
 
-      // telegram.sendData(JSON.stringify(orderData)); // Отправляем данные в бота
+      telegram.sendData(JSON.stringify(orderData)); // Отправляем данные в бота
       telegram.close();
       // Show success message
       addOrder({ ...orderData, products });
