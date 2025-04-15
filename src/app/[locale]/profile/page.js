@@ -107,6 +107,7 @@ export default function ProfilePage({ params }) {
                       {TRANSLATIONS.total[locale]}
                     </span>
                     <span className="font-bold text-chaomi-red">
+                      {console.log(order)}
                       {formatPrice(order?.all_price)}
                     </span>
                   </div>

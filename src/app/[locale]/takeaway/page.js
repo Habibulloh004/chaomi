@@ -53,10 +53,10 @@ export default function TakeawayPage({ params }) {
       const newOrderId = generateOrderId();
       setOrderId(newOrderId);
       const orderData = {
-        id: newOrderId,
-        name,
-        phone,
-        address,
+        // id: newOrderId,
+        // name,
+        // phone,
+        // address,
         products: products?.map((product) => {
           return {
             product_id: product?.product_id,
@@ -68,11 +68,11 @@ export default function TakeawayPage({ params }) {
         all_price: getTotal(),
         // delivery_price: deliveryFee,
         comment: notes,
-        date: new Date().toISOString(),
+        // date: new Date().toISOString(),
       };
       console.log(orderData);
 
-      telegram.sendData(JSON.stringify(orderData)); // Отправляем данные в бота
+      // telegram.sendData(JSON.stringify(orderData)); // Отправляем данные в бота
       telegram.close();
       // Show success message
       addOrder({ ...orderData, products });
@@ -123,7 +123,7 @@ export default function TakeawayPage({ params }) {
       </div>
       <form onSubmit={handleSubmit} className="space-y-6 p-4 bg-white">
         {/* Contact Information */}
-        <div>
+        {/* <div>
           <h2 className="mb-4 font-medium">
             {locale === "uz" && "Aloqa ma'lumotlari"}
             {locale === "ru" && "Контактная информация"}
@@ -170,10 +170,10 @@ export default function TakeawayPage({ params }) {
               />
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* Delivery Information */}
-        {deliveryMethod === "delivery" && (
+        {/* {deliveryMethod === "delivery" && (
           <div>
             <h2 className="mb-4 font-medium">
               {locale === "uz" && "Yetkazib berish ma'lumotlari"}
@@ -202,7 +202,6 @@ export default function TakeawayPage({ params }) {
           </div>
         )}
 
-        {/* Pickup Information */}
         {deliveryMethod === "pickup" && selectedSpot && (
           <div>
             <h2 className="mb-4 font-medium">
@@ -221,7 +220,7 @@ export default function TakeawayPage({ params }) {
               </div>
             </div>
           </div>
-        )}
+        )} */}
 
         {/* Order Notes */}
         <div>
@@ -305,7 +304,7 @@ export default function TakeawayPage({ params }) {
             </div>
 
             {/* Delivery Fee */}
-            {deliveryMethod === "delivery" && (
+            {/* {deliveryMethod === "delivery" && (
               <div className="mt-2 flex justify-between">
                 <span className="text-sm text-gray-600">
                   {locale === "uz" && "Yetkazib berish narxi"}
@@ -314,7 +313,7 @@ export default function TakeawayPage({ params }) {
                 </span>
                 <span className="text-sm">{formatPrice(deliveryFee)}</span>
               </div>
-            )}
+            )} */}
 
             {/* Total */}
             <div className="mt-3 flex justify-between border-t border-gray-100 pt-3">
